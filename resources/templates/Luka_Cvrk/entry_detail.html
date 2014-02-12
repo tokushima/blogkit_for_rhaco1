@@ -1,0 +1,69 @@
+<rt:extends href="./entry_list.html"/>
+<rt:block name="subtitle">
+| {$object.title}
+</rt:block>
+
+<rt:block name="entry">
+		<div id="main">
+			<!-- 
+				{$object.rdf()}
+			 -->
+			<h3>
+				{$object.formatCreateDate()}
+			</h3>
+			<h2><a href="{$rhaco.url($object.name)}">{$object.title}</a></h2>
+			<p>{$z.f($object.description)}</p>	
+		</div>
+</rt:block>
+
+
+
+<rt:block name="addComment">
+	<li class="first">
+		<h2 title="Add Coment">Add Comment</h2>
+		<form name="comment_form" method="POST">
+			<div>
+				name:<br/><input type="text" name="name" rt:reference="true" />
+				<br/>
+				comment:<br/><textarea name="comment" cols="25" rows="5" rt:reference="true"></textarea><br/>
+				<input type="hidden" name="entryId" value="{$object.id}"/>
+				question:<br />
+				<div>
+					{$f.text2html($object.commentQuestion)}
+				</div>
+				answer:<br />
+				<input type="text" size="20" name="commentAnswer" />
+			</div>
+			<br />
+			<input type="submit" value="comment"/>
+		</form>
+		<rt:invalid var="errors">
+		<ul class="exception">
+			<rt:loop param="errors" var="msg">
+				<li>{$msg}</li>
+			</rt:loop>
+		</ul>
+		</rt:invalid>
+	</li>
+</rt:block>
+
+<rt:block name="listComment">
+	<li>
+		<ul>
+			<rt:loop  param="detail_comment_list" var="comment">
+				<li class="comment">
+					{$f.text2Html({$comment.comment})}<br /><br />
+					posted by {$f.text2Html({$comment.name})} : {$comment.formatCreateDate('Y/m/d')}<br />
+				</li>
+			</rt:loop>
+		</ul>
+	</li>
+</rt:block>
+
+<rt:block name="menu">
+		<ul id="menu">
+				<rt:loop param="{$object.tags()}" var="tag">
+					<li><a href="{$rhaco.url('tag')}/{$tag}">{$tag}</a></li>
+				</rt:loop>
+		</ul>
+</rt:block>

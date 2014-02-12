@@ -1,0 +1,74 @@
+<project rhacover="1.6.1" version="0.3.4" name="Blogkit" pathinfo="index.php">
+	<description>
+		簡易ブログ
+		投稿等はadminを利用します。
+	</description>
+	<database name="blogkit">
+		<table name="ENTRY">
+			<column name="id" type="serial"/>
+			<column name="name" type="string" size="50" unique="true" chartype="/^[\w\d]*$/i" />
+			<column name="title" type="string" size="100" require="true" />
+			<column name="description" type="text" require="true" />
+			<column name="tag" type="string" />
+			<column name="create_date" type="timestamp" default="sysdate"/>
+			<column name="update_date" type="timestamp" default="sysdate"/>
+			<column name="comment_count" type="int" default="0" />
+			<column name="comment_question" type="text" default="1 + 1 = ?" />
+			<column name="comment_answer " type="string" default="2" />
+			<column name="draft" type="boolean" default="false">下書き</column>
+			<extra name="isping" type="boolean" default="false">Pingの発行</extra>
+		</table>
+		<table name="COMMENT">
+			<column name="id" type="serial"/>
+			<column name="name" type="string" require="true" />
+			<column name="comment" type="text" require="true" />
+			<column name="create_date" type="timestamp" default="sysdate"/>
+			<column name="entry_id" type="integer" require="true" reference="entry.id"/>
+			<extra name="comment_answer" type="string" require="true" />
+		</table>
+		<table name="TAG">
+			<column name="id" type="serial"/>
+			<column name="name" type="string" require="true"/>
+		</table>
+	</database>
+
+	<select name="TEMPLATE">
+		<title>view template</title>
+		<rt:loop param="{$file.dirs({$rhaco.templatepath()},false,false)}" var="name">
+			<data>{$name}</data>
+		</rt:loop>
+	</select>
+	<input name="BLOG_TITLE">
+		<title>BlogのTitle</title>
+		<data>Blog</data>
+	</input>
+	<text name="BLOG_DESCRIPTION">
+		<title>Blogの説明</title>
+		<data>My Blog Page</data>
+	</text>
+	<text name="BLOG_CM">
+		<title>アフィリエイト等</title>
+	</text>
+	<text name="BLOG_FOOTER">
+		<title>Blogのフッタ</title>
+	</text>
+
+	<input name="PAGE_LIMIT">
+		<title>１ページの表示件数</title>
+		<data>10</data>
+	</input>
+	<input name="FEED_TITLE">
+		<title>FEEDのTitle</title>
+	</input>	
+	<text name="FEED_URL">
+		<title>購読するFEED</title>
+	</text>
+	<text name="LINKS">
+		<title>表示するリンク</title>
+		<data>http://rhaco.org rhaco.org</data>
+	</text>
+	<text name="PING_URL">
+		<title>PING先URL</title>
+		<data>http://rpc.technorati.jp/rpc/ping</data>
+	</text>
+</project>

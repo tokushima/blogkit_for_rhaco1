@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Title      : Asterisk
+Version    : 1.0
+Released   : 20070826
+Description: A multi-column, fixed-width design for 800x600 resolutions.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>{$rhaco.constant('BLOG_TITLE')} <rt:block name="subtitle" /></title>
+	<link href="default.css" rel="stylesheet" type="text/css" />
+	<link rel="alternate" type="application/rss+xml" href="{$rhaco.url('rss')}" />
+	<link href="./prettify-small/prettify.css" rel="stylesheet" type="text/css" />
+	<script language="javascript" type="text/javascript" src="./prettify-small/prettify.js"></script>
+	
+	<script type="text/javascript" src="./script/jquery-1.2.3.pack.js"></script>
+	<script type="text/javascript" src="./script/jquery.hatebshow.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#hatena_bookmark").hatebShow()
+	});
+	</script>
+</head>
+<body>
+<!-- start header -->
+<div id="header">
+	<div id="logo">
+		<h1><a href="{$rhaco.url()}">{$rhaco.constant('BLOG_TITLE')}</a></h1>
+		<p><a href="{$rhaco.url()}">{$f.text2html($rhaco.constant('BLOG_DESCRIPTION'))}</a></p>
+	</div>
+	<div id="menu">
+		<ul>
+			<rt:loop param="links" var="linkname" key="url">
+				<li><a href="{$url}">{$linkname}</a></li>
+			</rt:loop>
+		</ul>
+	</div>
+</div>
+<hr />
+<!-- end header -->
+<!-- start page -->
+<div id="wrapper">
+	<div id="page">
+		<!-- start content -->
+		<rt:block name="entry">
+			<div id="content">
+				<rt:loop param="object_list" var="entry" limit="2">
+					<!-- 
+						{$entry.rdf()}
+					 -->
+					<div class="post">
+						<p class="date">{$entry.formatCreateDate('M')} <b>{$entry.formatCreateDate('j')}</b></p>
+						<h2 class="title"><a href="{$rhaco.url($entry.name)}">{$entry.title}</a></h2>
+						<p class="meta">
+							<rt:loop param="{$entry.tags()}" var="tag">
+								<a href="{$rhaco.url('tag')}/{$tag}">{$tag}</a> 
+							</rt:loop>
+							| <a href="{$rhaco.url($entry.name)}">comment({$entry.commentCount})</a>
+						</p>
+						<div class="entry">
+							<p>{$z.f($entry.description)}</p>
+						</div>
+					</div>
+				</rt:loop>
+			</div>
+		</rt:block>
+		<!-- end content -->
+		<!-- start sidebar -->
+		<div id="sidebar">
+			<ul>
+				<li>
+					<h2 id="Search">Search</h2>
+					<form name="search_form" method="post" action="{$rhaco.url()}">
+						<div class="table_content">
+							<input type="text" name="q" rt:reference="true"/>
+						</div>
+					</form>				
+				</li>
+				<li id="Tags">
+					<h2>Tags</h2>
+					<ul>
+						<rt:loop param="tag_list" var="tag">
+							<li><a href="{$rhaco.url('tag')}/{$tag.name}">{$tag.name}</a></li>
+						</rt:loop>
+					</ul>
+				</li>
+			</ul>
+			{$rhaco.constant('BLOG_CM')}
+			
+		</div>
+		<!-- end sidebar -->
+		<br style="clear: both;" />
+	</div>
+</div>
+<!-- end page -->
+<!-- start footer -->
+<div id="wrapper2">
+	<div id="footer">
+		<ul>
+			<rt:block name="addComment">
+				<li class="first">
+					<h2 title="Entries">Entries</h2>
+					<ul>
+						<rt:loop param="object_list" var="entry" offset="3" limit="10">
+							<li><a href="{$rhaco.url($entry.name)}">{$entry.title}</a></li>
+						</rt:loop>
+					</ul>
+					<div class="pager">
+						<rt:pager param="pager" counter="false" />
+					</div>
+				</li>
+			</rt:block>
+			<rt:block name="listComment">
+				<li>
+					<h2 title="Recent Comment">Recent Comment</h2>
+					<ul>
+						<rt:loop param="comment_list" var="comment">
+							<li>
+								<a href="{$rhaco.url($comment.factEntryId.name)}">{$comment.factEntryId.title}</a>
+								posted by {$comment.name}
+							</li>
+						</rt:loop>
+					</ul>
+				</li>
+			</rt:block>
+			<li>
+				<h2>{$rhaco.constant('FEED_TITLE')}</h2>
+				<ul>
+					<rt:loop param="{$feed_list}" var="feed" limit="7">
+						<li><a href="{$feed.getLink()}">{$f.striptags($f.getCdata($feed.getDescription()))}</a></li>
+					</rt:loop>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<p id="legal">
+		Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a> &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+		Icons by <a href="http://famfamfam.com/">FAMFAMFAM</a>. <br />
+</div>
+<!-- end footer -->
+{$rhaco.constant('BLOG_FOOTER')}
+<script language="javascript">
+<!--
+	prettyPrint();
+//-->
+</script>
+</body>
+</html>

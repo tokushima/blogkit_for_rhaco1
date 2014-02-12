@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{$rhaco.constant('BLOG_TITLE')} <rt:block name="subtitle" /></title>
+	<rt:if param="{$tags}">
+		<link rel="alternate" type="application/rss+xml" href="{$rhaco.url('rss')}/{$tags}" />
+	</rt:if>	
+	<link rel="alternate" type="application/rss+xml" href="{$rhaco.url('rss')}" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+	<div id="content">
+		<div id="top">
+			<p>
+				<rt:loop param="links" var="linkname" key="url">
+					<a href="{$url}">{$linkname}</a>
+				</rt:loop>
+			</p>		
+			<form id="search_engine" method="post" action="{$rhaco.url()}">
+				<p><input rt:reference="true" class="searchfield" name="q" type="text" id="q" value="Search Keywords" onfocus="document.forms['search_engine'].keywords.value='';" onblur="if (document.forms['search_engine'].keywords.value == '') document.forms['search_engine'].keywords.value='Search Keywords';" />
+				<input class="searchbutton" name="submit" type="submit" value="Search" /></p>
+			</form>
+		</div>
+		<div id="logo">
+			<h1><a href="{$rhaco.url()}">{$rhaco.constant('BLOG_TITLE')}</a></h1>
+			<p>{$f.text2html($rhaco.constant('BLOG_DESCRIPTION'))}</p>
+		</div>
+		<rt:block name="menu">
+		<ul id="menu">
+			<rt:loop param="object_list" var="entry" limit="1">
+				<rt:loop param="{$entry.tags()}" var="tag">
+					<li><a href="{$rhaco.url('tag')}/{$tag}">{$tag}</a></li>
+				</rt:loop>
+			</rt:loop>
+		</ul>
+		</rt:block>
+		<rt:block name="entry">
+		<div id="main">
+			<rt:loop param="object_list" var="entry" limit="1">
+			<!-- 
+				{$entry.rdf()}
+			 -->
+			<h3>
+				{$entry.formatCreateDate()} | <a href="{$rhaco.url($entry.name)}">comment({$entry.commentCount})</a>
+			</h3>
+			<h2><a href="{$rhaco.url($entry.name)}">{$entry.title}</a></h2>
+			<p>{$z.f($entry.description)}</p>	
+			</rt:loop>
+		</div>
+		</rt:block>
+		<div id="shortnews">
+			{$rhaco.constant('BLOG_CM')}
+		</div>
+		<div id="line"></div>
+		<div id="left">
+			<!--   -->
+		</div>
+		<div id="right">	
+			<div id="rl">
+				<rt:block name="addComment">
+					<ul>
+						<rt:loop param="object_list" var="entry" offset="2" limit="10">
+						<li><a href="{$rhaco.url($entry.name)}">{$f.substring($entry.title,20)}</a></li>
+						</rt:loop>
+					</ul>
+					<div class="pager">
+						<rt:pager param="pager" counter="false" />
+					</div>
+				</rt:block>
+			</div>
+			<div id="rr">
+				<rt:block name="listComment">
+				<ul>
+					<rt:loop param="comment_list" var="comment">
+					<li>
+						<a href="{$rhaco.url($comment.factEntryId.name)}">{$comment.factEntryId.title}</a>
+						posted by {$comment.name}
+					</li>
+					</rt:loop>
+				</ul>
+				</rt:block>
+
+			</div>
+			<p class="border"></p>
+		</div>
+		<div id="footer">
+			<div id="fl">
+				<p>
+					{$rhaco.constant('BLOG_FOOTER')}
+				</p>
+				<p>Design: <a href="http://www.solucija.com/">Luka Cvrk</a> &middot; Sponsored by <a class="sponsor" href="http://webpoint.wordpress.com/">B4Contact</a> &middot; Released under a <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Licence</a></p>
+			</div>
+		</div>	
+	</div>
+</body>
+</html>
